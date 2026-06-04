@@ -1,5 +1,20 @@
 version: "3.8"
 
+x-airflow-common: &airflow-common
+    image: apache/airflow:2.10.5
+    environment:
+        AIRFLOW__CORE__EXECUTOR: LocalExecutor
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
+        AIRFLOW__CORE__FERNET_KEY: ''
+        AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    volumes:
+        - ./dags:/opt/airflow/dags
+        - ./logs:/opt/airflow/logs
+        - ./src:/opt/airflow/src
+        - ./.env:/opt/airflow/.env
+    depends_on:
+        airflow-postgres:
+            condition: service_started
 services:
   postgres:
     image: postgres:16
@@ -13,5 +28,35 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  airflow-postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+
+    volumes:
+      - airflow_postgres_data:/var/lib/postgresql/data
+
+  airflow-init:
+    <<: *airflow-common
+    command: >
+            bash -c "airflow db migrate && airflow users create
+            --username admin --password admin --firstname Admin
+            --lastname User --role Admin --email admin@example.com"
+    restart: "no"
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: airflow webserver
+    ports:
+      - "8080:8080"
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: airflow scheduler
+    restart: always
 volumes:
   postgres_data:
+  airflow_postgres_data:
