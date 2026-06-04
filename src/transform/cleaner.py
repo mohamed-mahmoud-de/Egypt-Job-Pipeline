@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 def parse_date_posted(text):
-    if text == "N/A" or not text:
+    if text == "N/A" or not text or not isinstance(text, str):
         return None
     
     parts = text.split()

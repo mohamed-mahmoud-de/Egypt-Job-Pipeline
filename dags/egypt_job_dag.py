@@ -3,6 +3,7 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime
 import sys
 import os
+import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -12,18 +13,28 @@ from src.load.db import insert_jobs
 
 def extract():
     jobs = scrape_jobs()
-    return jobs
+    db = pd.DataFrame(jobs)
+    file_path = f"/opt/airflow/raw_data_{datetime.now().strftime('%Y-%m-%d')}.csv"
+    db.to_csv(file_path, index=False)
+    return file_path
 
 def transform(**kwargs):
     ti = kwargs["ti"]
-    jobs = ti.xcom_pull(task_ids="extract")
-    cleaned = clean_jobs(jobs)
-    return cleaned
+    raw_csv_path  = ti.xcom_pull(task_ids="extract")
+    raw_csv_df = pd.read_csv(raw_csv_path)
+    raw_jobs = raw_csv_df.to_dict(orient="records")
+    cleaned = clean_jobs(raw_jobs)
+    cleaned_path = f"/opt/airflow/cleaned_data_{datetime.now().strftime('%Y-%m-%d')}.csv"
+    pd.DataFrame(cleaned).to_csv(cleaned_path, index=False)
+    return cleaned_path
 
 def load(**kwargs):
     ti = kwargs["ti"]
-    jobs = ti.xcom_pull(task_ids="transform")
-    insert_jobs(jobs)
+    load_jobs_csv = ti.xcom_pull(task_ids="transform")
+    df = pd.read_csv(load_jobs_csv)
+    df = df.where(df.notna(), None)
+    cleaned_jobs = df.to_dict(orient="records")
+    insert_jobs(cleaned_jobs)
     
 
 with DAG(
