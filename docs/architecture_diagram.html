@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egypt Jobs Pipeline - Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d1117;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  .container {
+    background: #161b22;
+    border-radius: 16px;
+    padding: 48px 56px;
+    max-width: 1100px;
+    width: 100%;
+    border: 1px solid #30363d;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header h1 {
+    color: #f0f6fc;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .header p {
+    color: #8b949e;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+  }
+
+  .stage-box {
+    background: #21262d;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    padding: 18px 22px;
+    text-align: center;
+    transition: all 0.2s;
+    min-width: 120px;
+  }
+
+  .stage-box.source {
+    border-color: #f78166;
+    background: linear-gradient(135deg, #21262d 0%, #2a1a1a 100%);
+  }
+
+  .stage-box.extract {
+    border-color: #3fb950;
+    background: linear-gradient(135deg, #21262d 0%, #1a2a1a 100%);
+  }
+
+  .stage-box.transform {
+    border-color: #58a6ff;
+    background: linear-gradient(135deg, #21262d 0%, #1a1a2a 100%);
+  }
+
+  .stage-box.load {
+    border-color: #d2a8ff;
+    background: linear-gradient(135deg, #21262d 0%, #2a1a2a 100%);
+  }
+
+  .stage-box.database {
+    border-color: #79c0ff;
+    background: linear-gradient(135deg, #21262d 0%, #1a2229 100%);
+  }
+
+  .stage-box.dashboard {
+    border-color: #ff7b72;
+    background: linear-gradient(135deg, #21262d 0%, #2a1a1a 100%);
+  }
+
+  .stage-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 6px;
+  }
+
+  .stage-label {
+    color: #f0f6fc;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .stage-tech {
+    color: #8b949e;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .arrow {
+    color: #484f58;
+    font-size: 28px;
+    font-weight: 300;
+    margin-top: -20px;
+  }
+
+  .orchestrator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #1a2332;
+    border: 2px dashed #1f6feb;
+    border-radius: 12px;
+    padding: 14px 32px;
+    margin: 0 auto 24px;
+    max-width: 720px;
+  }
+
+  .orchestrator img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .orchestrator-text {
+    color: #58a6ff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .orchestrator-sub {
+    color: #8b949e;
+    font-size: 11px;
+  }
+
+  .alert-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #1a1a22;
+    border: 2px dashed #5865f2;
+    border-radius: 12px;
+    padding: 14px 32px;
+    margin: 0 auto;
+    max-width: 420px;
+  }
+
+  .alert-section img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .alert-text {
+    color: #5865f2;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .alert-sub {
+    color: #8b949e;
+    font-size: 11px;
+  }
+
+  .section-label {
+    text-align: center;
+    color: #484f58;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .bottom-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 24px;
+  }
+
+  .features {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .feature-tag {
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 20px;
+    padding: 6px 16px;
+    color: #8b949e;
+    font-size: 12px;
+  }
+
+  .feature-tag span {
+    color: #3fb950;
+    margin-right: 4px;
+  }
+
+  .vert-arrow {
+    text-align: center;
+    color: #484f58;
+    font-size: 22px;
+    margin: 8px 0;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Egypt Jobs Pipeline — Architecture</h1>
+      <p>Automated ETL pipeline for Egyptian tech job listings</p>
+    </div>
+
+    <!-- Main Pipeline Flow -->
+    <div class="section-label">Data Flow</div>
+    <div class="pipeline">
+      <div class="stage">
+        <div class="stage-box source">
+          <img class="stage-icon" src="https://cdn.simpleicons.org/google/f78166" alt="Web" onerror="this.style.display='none'">
+          <div class="stage-label">Wuzzuf.net</div>
+          <div class="stage-tech">Job Listings</div>
+        </div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="stage">
+        <div class="stage-box extract">
+          <img class="stage-icon" src="https://cdn.simpleicons.org/python/3fb950" alt="Python">
+          <div class="stage-label">Extract</div>
+          <div class="stage-tech">BeautifulSoup4</div>
+          <div class="stage-tech">requests</div>
+        </div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="stage">
+        <div class="stage-box transform">
+          <img class="stage-icon" src="https://cdn.simpleicons.org/pandas/58a6ff" alt="Pandas">
+          <div class="stage-label">Transform</div>
+          <div class="stage-tech">pandas</div>
+          <div class="stage-tech">Data Cleaning</div>
+        </div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="stage">
+        <div class="stage-box load">
+          <img class="stage-icon" src="https://cdn.simpleicons.org/postgresql/d2a8ff" alt="Postgres">
+          <div class="stage-label">Load</div>
+          <div class="stage-tech">psycopg2</div>
+          <div class="stage-tech">PostgreSQL 16</div>
+        </div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="stage">
+        <div class="stage-box dashboard">
+          <img class="stage-icon" src="https://cdn.simpleicons.org/streamlit/ff7b72" alt="Streamlit">
+          <div class="stage-label">Dashboard</div>
+          <div class="stage-tech">Streamlit</div>
+          <div class="stage-tech">Job Browser</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orchestrator -->
+    <div class="vert-arrow">↕</div>
+    <div class="section-label">Orchestration</div>
+    <div class="orchestrator">
+      <img src="https://cdn.simpleicons.org/apacheairflow/017cee" alt="Airflow">
+      <div>
+        <div class="orchestrator-text">Apache Airflow</div>
+        <div class="orchestrator-sub">Scheduling (every 2h) · Retries with Exponential Backoff · Backfill · XComs</div>
+      </div>
+    </div>
+
+    <!-- Alerting -->
+    <div class="vert-arrow">↕</div>
+    <div class="section-label">Alerting</div>
+    <div class="alert-section">
+      <img src="https://cdn.simpleicons.org/discord/5865f2" alt="Discord">
+      <div>
+        <div class="alert-text">Discord Webhooks</div>
+        <div class="alert-sub">Failure & Success alerts via embedded messages</div>
+      </div>
+    </div>
+
+    <!-- Feature Tags -->
+    <div class="features">
+      <div class="feature-tag"><span>✓</span> Dockerized</div>
+      <div class="feature-tag"><span>✓</span> Paginated Scraping</div>
+      <div class="feature-tag"><span>✓</span> Deduplication</div>
+      <div class="feature-tag"><span>✓</span> Env-based Config</div>
+      <div class="feature-tag"><span>✓</span> Backfill Support</div>
+      <div class="feature-tag"><span>✓</span> Real-time Alerts</div>
+    </div>
+  </div>
+</body>
+</html>
