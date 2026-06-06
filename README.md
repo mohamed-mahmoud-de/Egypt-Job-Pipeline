@@ -140,6 +140,14 @@ GROUP BY company
 ORDER BY openings DESC
 LIMIT 5;
 ```
+## Dashboard
+
+![Dashboard Overview](docs/dashboard.png)
+
+![Jobs by Company](docs/dashboard_chart.png)
+
+![Jobs Table](docs/dashboard_table.png)
+
 ## Roadmap
 
 - **V1** — Naive Python script, single source, runs on demand *(complete)*
