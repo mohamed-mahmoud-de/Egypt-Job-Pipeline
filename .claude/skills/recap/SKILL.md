@@ -1,16 +1,27 @@
 ---
 name: recap
-description: End the current session with a structured recap. Summarizes what was built, concepts learned, errors hit, what is incomplete, and suggests a commit message. Use at the end of every session.
+description: End of session recap. Summarizes what was built, concepts learned, errors hit, next steps, and suggests a commit message. Use at the end of every session.
 ---
 
 End this session with a structured recap:
 
-1. WHAT WE BUILT — list the concrete things we added or changed
-2. CONCEPTS LEARNED — what data engineering concepts I practiced
-3. WHAT BROKE — any errors we hit and how we fixed them
-4. STILL INCOMPLETE — what is left unfinished from today
-5. HOMEWORK — one small thing I should try on my own before next session
-6. COMMIT MESSAGE — suggest a clear git commit message for today's work
+1. WHAT WE BUILT — concrete things added or changed
 
-Keep it concise. Bullet points are fine.
-After the recap, remind me to commit and push.
+2. CONCEPTS LEARNED — one interview-ready sentence per concept.
+   Focus on Redis patterns and polling design if applicable.
+
+3. WHAT BROKE — errors hit, what they meant, how we fixed them
+
+4. STILL INCOMPLETE — what is unfinished from today
+
+5. HOMEWORK — one thing to try alone before next session.
+   Should take 15-20 minutes max.
+
+6. V3 PROGRESS — quick status of all 7 sessions:
+   Session 1: [ ] [ done ] [ partial ]
+   Session 2: [ ] [ done ] [ partial ]
+   ... and so on
+
+7. COMMIT MESSAGE — suggest a clear git commit message
+
+Remind me to commit, push, and log this session in Notion.

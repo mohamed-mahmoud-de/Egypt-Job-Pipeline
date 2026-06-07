@@ -1,19 +1,24 @@
 ---
 name: start-session
-description: Start a new development session. Reads the project state from git and files, then proposes what to work on next. Use at the beginning of every session.
+description: Start a new V3 session. Reads project state, draws the current polling architecture, and proposes what to work on. Use at the beginning of every session.
 ---
 
 Read CLAUDE.md for project context and teaching rules.
 Then explore the current state of the codebase:
 
 1. Run: git log --oneline -10
-2. List the folder structure
-3. Read any files that changed in the last few commits
+2. List the folder structure (focus on v3/ folder if it exists)
+3. Read any recently changed files
 
 Then tell me:
-- Current state of the project (what is built, what is not)
-- What we likely worked on last based on recent commits
-- 2 or 3 options for what to tackle next
 
-Wait for me to pick before doing anything.
-Do NOT start writing code or making changes.
+1. Draw the CURRENT architecture in ASCII showing what
+   is actually built vs what is still planned.
+   Use: [BUILT], [PARTIAL], [NOT YET]
+
+2. Where we are in the V3 session map from CLAUDE.md
+
+3. Two or three options for what to work on today,
+   ordered by what makes most sense next
+
+Wait for me to choose. Do NOT write code or make changes.
