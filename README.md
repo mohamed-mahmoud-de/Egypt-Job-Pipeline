@@ -152,7 +152,7 @@ LIMIT 5;
 
 - **V1** — Naive Python script, single source, runs on demand *(complete)*
 - **V2 (current)** — Airflow DAG with scheduling, retries, exponential backoff, Discord alerting, backfill, and Streamlit dashboard
-- **V3** — Streaming pipeline with Kafka + Spark for real-time job ingestion
+- **V3 (in progress)** — Real-time alert system with Redis deduplication, polling loop, and Discord notifications for new job listings
 
 ## Author
 
