@@ -1,0 +1,23 @@
+{
+  "wanted_keywords": [
+    "data engineer",
+    "data analyst",
+    "python",
+    "web developer",
+    "mobile",
+    "software",
+    "developer",
+    "programmer",
+    "backend",
+    "full stack",
+    "front end",
+    "machine learning",
+    "artificial intelligence",
+    "cloud",
+    "aws",
+    "azure",
+    "gcp",
+    "devops"
+  ],
+  "not_wanted_keywords": ["senior", "lead", "manager", "director", "principal", "staff", "vp", "vice president", "cto", "ceo", "cfo", "coo"]
+}
